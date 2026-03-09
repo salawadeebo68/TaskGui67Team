@@ -14,7 +14,7 @@ STYLE = """
 QWidget {
     background-color: #0f0f1a;
     color: #e8e8f0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'prompt', sans-serif;
     font-size: 13px;
 }
 

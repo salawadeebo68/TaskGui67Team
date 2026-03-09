@@ -1,13 +1,28 @@
 import sys
 import os
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
-    QListWidget, QLineEdit, QComboBox, QLabel,
-    QListWidgetItem, QDialog, QDateEdit, QTextEdit,
-    QCheckBox, QFrame, QScrollArea, QSizePolicy,
-    QGraphicsDropShadowEffect, QApplication, QMessageBox
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QPushButton,
+    QListWidget,
+    QLineEdit,
+    QComboBox,
+    QLabel,
+    QListWidgetItem,
+    QDialog,
+    QDateEdit,
+    QTextEdit,
+    QCheckBox,
+    QFrame,
+    QScrollArea,
+    QSizePolicy,
+    QGraphicsDropShadowEffect,
+    QApplication,
+    QMessageBox,
 )
 from PySide6.QtCore import Qt, QDate, QTimer, QPropertyAnimation, QEasingCurve, QSize
 from PySide6.QtGui import QColor, QFont, QIcon, QPalette, QLinearGradient, QPainter
@@ -20,7 +35,7 @@ from gui.styles import STYLE, DIALOG_EXTRA, PRIORITY_COLORS, PRIORITY_BG
 class AddTaskDialog(QDialog):
     def __init__(self, parent=None, task=None):
         super().__init__(parent)
-        self.setWindowTitle("เพิ่ม งาน" if not task else "แก้ไขงาน")
+        self.setWindowTitle("เพิ่มงาน" if not task else "แก้ไขงาน")
         self.setMinimumWidth(420)
         self.setStyleSheet(STYLE + DIALOG_EXTRA)
 
@@ -29,11 +44,26 @@ class AddTaskDialog(QDialog):
         layout.setContentsMargins(24, 24, 24, 24)
 
         header = QLabel("" + ("เพิ่มงานใหม่" if not task else "แก้ไขงาน"))
-        header.setStyleSheet("font-size:16px; font-weight:700; color:#e8e8f0; margin-bottom:4px;")
+        header.setStyleSheet(
+            """
+            font-size:22px;
+            font-weight:800;
+            color:#c4b5fd;
+            background: transparent;
+            border: none;
+            """
+        )
         layout.addWidget(header)
 
         lbl_title = QLabel("ชื่องาน")
         lbl_title.setObjectName("section_label")
+        lbl_title.setStyleSheet("""
+font-size:22px;
+font-weight:800;
+color:#c4b5fd;
+background: transparent;
+border: none;
+""")
         layout.addWidget(lbl_title)
         self.input_title = QLineEdit()
         self.input_title.setPlaceholderText("เช่น ทำรายงาน, เขียนโค้ด...")
@@ -45,6 +75,13 @@ class AddTaskDialog(QDialog):
         col1 = QVBoxLayout()
         lbl_dl = QLabel("กำหนดเวลา")
         lbl_dl.setObjectName("section_label")
+        lbl_dl.setStyleSheet("""
+font-size:22px;
+font-weight:800;
+color:#c4b5fd;
+background: transparent;
+border: none;
+""")
         col1.addWidget(lbl_dl)
         self.input_deadline = QDateEdit()
         self.input_deadline.setCalendarPopup(True)
@@ -55,6 +92,13 @@ class AddTaskDialog(QDialog):
         col2 = QVBoxLayout()
         lbl_pr = QLabel("PRIORITY")
         lbl_pr.setObjectName("section_label")
+        lbl_pr.setStyleSheet("""
+font-size:22px;
+font-weight:800;
+color:#c4b5fd;
+background: transparent;
+border: none;
+""")
         col2.addWidget(lbl_pr)
         self.input_priority = QComboBox()
         self.input_priority.addItems(["High", "Medium", "Low"])
@@ -67,6 +111,13 @@ class AddTaskDialog(QDialog):
 
         lbl_notes = QLabel("หมายเหตุ (ไม่บังคับ)")
         lbl_notes.setObjectName("section_label")
+        lbl_notes.setStyleSheet("""
+font-size:22px;
+font-weight:800;
+color:#c4b5fd;
+background: transparent;
+border: none;
+""")
         layout.addWidget(lbl_notes)
         self.input_notes = QTextEdit()
         self.input_notes.setPlaceholderText("รายละเอียดเพิ่มเติม...")
@@ -88,7 +139,9 @@ class AddTaskDialog(QDialog):
         if task:
             self.input_title.setText(task.title)
             if task.deadline:
-                self.input_deadline.setDate(QDate.fromString(task.deadline, "yyyy-MM-dd"))
+                self.input_deadline.setDate(
+                    QDate.fromString(task.deadline, "yyyy-MM-dd")
+                )
             self.input_priority.setCurrentText(task.priority)
             if hasattr(task, "notes"):
                 self.input_notes.setPlainText(task.notes)
@@ -98,7 +151,7 @@ class AddTaskDialog(QDialog):
             "title": self.input_title.text().strip(),
             "deadline": self.input_deadline.date().toString("yyyy-MM-dd"),
             "priority": self.input_priority.currentText(),
-            "notes": self.input_notes.toPlainText().strip()
+            "notes": self.input_notes.toPlainText().strip(),
         }
 
 
@@ -111,9 +164,9 @@ class StatsBar(QFrame):
         layout.setSpacing(0)
 
         self.lbl_total = self._make_stat("0", "ทั้งหมด")
-        self.lbl_done  = self._make_stat("0", "เสร็จแล้ว")
-        self.lbl_high  = self._make_stat("0", "ยาก")
-        self.lbl_over  = self._make_stat("0", "เลยกำหนด")
+        self.lbl_done = self._make_stat("0", "เสร็จแล้ว")
+        self.lbl_high = self._make_stat("0", "ยาก")
+        self.lbl_over = self._make_stat("0", "เลยกำหนด")
 
         for w in [self.lbl_total, self.lbl_done, self.lbl_high, self.lbl_over]:
             layout.addWidget(w)
@@ -121,14 +174,23 @@ class StatsBar(QFrame):
 
     def _make_stat(self, value, label):
         frame = QFrame()
+        frame.setStyleSheet("background: transparent; border: none;")
         v = QVBoxLayout(frame)
         v.setContentsMargins(8, 0, 8, 0)
         v.setSpacing(2)
         num = QLabel(value)
-        num.setStyleSheet("font-size:22px; font-weight:800; color:#c4b5fd;")
+        num.setStyleSheet(
+            """font-size:22px;
+font-weight:800;
+color:#c4b5fd;
+background: transparent;
+border: none;"""
+        )
         num.setAlignment(Qt.AlignCenter)
         lbl = QLabel(label)
-        lbl.setStyleSheet("font-size:9px; color:#6060a0; letter-spacing:2px; font-weight:600;")
+        lbl.setStyleSheet(
+            "font-size:9px; color:#6060a0; letter-spacing:2px; font-weight:600;"
+        )
         lbl.setAlignment(Qt.AlignCenter)
         v.addWidget(num)
         v.addWidget(lbl)
@@ -137,8 +199,8 @@ class StatsBar(QFrame):
 
     def update_stats(self, tasks, overdue_count):
         total = len(tasks)
-        done  = sum(1 for t in tasks if t.completed)
-        high  = sum(1 for t in tasks if t.priority == "High" and not t.completed)
+        done = sum(1 for t in tasks if t.completed)
+        high = sum(1 for t in tasks if t.priority == "High" and not t.completed)
         self.lbl_total._num.setText(str(total))
         self.lbl_done._num.setText(str(done))
         self.lbl_high._num.setText(str(high))
@@ -154,7 +216,7 @@ class MainWindow(QWidget):
         self.setMinimumSize(700, 500)
 
         self.manager = TaskManager()
-        self.notif   = NotificationService(self.manager)
+        self.notif = NotificationService(self.manager)
 
         self._build_ui()
         self.refresh_tasks()
@@ -174,7 +236,7 @@ class MainWindow(QWidget):
         title_col.setSpacing(2)
         title = QLabel("TASK MANAGER")
         title.setObjectName("title_label")
-        sub = QLabel("จัดการตารางเวลงาน")
+        sub = QLabel("จัดการตารางเวลางาน")
         sub.setObjectName("subtitle_label")
         title_col.addWidget(title)
         title_col.addWidget(sub)
@@ -220,9 +282,9 @@ class MainWindow(QWidget):
 
         btn_complete = QPushButton("เสร็จแล้ว")
         btn_complete.setObjectName("btn_success")
-        btn_edit     = QPushButton("แก้ไข")
+        btn_edit = QPushButton("แก้ไข")
         btn_edit.setObjectName("btn_ghost")
-        btn_delete   = QPushButton("ลบ")
+        btn_delete = QPushButton("ลบ")
         btn_delete.setObjectName("btn_danger")
 
         btn_complete.clicked.connect(self.complete_task)
@@ -235,15 +297,29 @@ class MainWindow(QWidget):
         root.addLayout(btn_row)
 
     def _make_task_item(self, task):
-        color  = PRIORITY_COLORS.get(task.priority, "#a0a0c0")
-        bg     = PRIORITY_BG.get(task.priority, "rgba(100,100,160,0.1)")
-        done_style = "opacity:0.45; text-decoration:line-through;" if task.completed else ""
-        status_icon = "✓" if task.completed else ("🔴" if task.priority == "High" else ("🟡" if task.priority == "Medium" else "🟢"))
-        deadline_html = f'<span style="color:#6060a0; font-size:11px;"> · 📅 {task.deadline}</span>' if task.deadline else ""
+        color = PRIORITY_COLORS.get(task.priority, "#a0a0c0")
+        bg = PRIORITY_BG.get(task.priority, "rgba(100,100,160,0.1)")
+        done_style = (
+            "opacity:0.45; text-decoration:line-through;" if task.completed else ""
+        )
+        status_icon = (
+            "✓"
+            if task.completed
+            else (
+                "🔴"
+                if task.priority == "High"
+                else ("🟡" if task.priority == "Medium" else "🟢")
+            )
+        )
+        deadline_html = (
+            f'<span style="color:#6060a0; font-size:11px;"> · 📅 {task.deadline}</span>'
+            if task.deadline
+            else ""
+        )
 
         html = f"""
         <div style="padding:4px 0; {done_style}">
-          <span style="
+        <span style="
             background:{bg};
             color:{color};
             font-size:10px;
@@ -252,17 +328,25 @@ class MainWindow(QWidget):
             border-radius:4px;
             padding:2px 7px;
             margin-right:8px;
-          ">{task.priority.upper()}</span>
-          <span style="font-size:13px; font-weight:600; color:{'#888' if task.completed else '#e8e8f0'};">{task.title}</span>
-          {deadline_html}
+        ">{task.priority.upper()}</span>
+        <span style="font-size:13px; font-weight:600; color:{'#888' if task.completed else '#e8e8f0'};">{task.title}</span>
+        {deadline_html}
         </div>
         """
         return html
 
     def refresh_tasks(self):
-        search   = self.search_input.text() if hasattr(self, "search_input") else ""
-        priority = self.filter_priority.currentText() if hasattr(self, "filter_priority") else "All"
-        show_done = self.filter_completed.isChecked() if hasattr(self, "filter_completed") else True
+        search = self.search_input.text() if hasattr(self, "search_input") else ""
+        priority = (
+            self.filter_priority.currentText()
+            if hasattr(self, "filter_priority")
+            else "All"
+        )
+        show_done = (
+            self.filter_completed.isChecked()
+            if hasattr(self, "filter_completed")
+            else True
+        )
 
         self.current_tasks = self.manager.get_tasks(priority, search, show_done)
         self.task_list.clear()
@@ -273,6 +357,7 @@ class MainWindow(QWidget):
             self.task_list.addItem(item)
 
             widget = QLabel(self._make_task_item(task))
+            widget.setStyleSheet("background: transparent; border: none;")
             widget.setTextFormat(Qt.RichText)
             widget.setContentsMargins(4, 0, 4, 0)
             self.task_list.setItemWidget(item, widget)
@@ -285,7 +370,9 @@ class MainWindow(QWidget):
         if dlg.exec():
             d = dlg.get_data()
             if d["title"]:
-                self.manager.add_task(d["title"], d["deadline"], d["priority"], d["notes"])
+                self.manager.add_task(
+                    d["title"], d["deadline"], d["priority"], d["notes"]
+                )
                 self.refresh_tasks()
 
     def edit_task(self):
@@ -299,7 +386,9 @@ class MainWindow(QWidget):
         if dlg.exec():
             d = dlg.get_data()
             if d["title"]:
-                self.manager.edit_task(real_idx, d["title"], d["deadline"], d["priority"])
+                self.manager.edit_task(
+                    real_idx, d["title"], d["deadline"], d["priority"]
+                )
                 self.refresh_tasks()
 
     def complete_task(self):
@@ -322,9 +411,11 @@ class MainWindow(QWidget):
 
     def _check_notifications(self):
         alerts = self.notif.check_notifications()
+
         if alerts:
+            QApplication.beep()  # เสียงแจ้งเตือน
+
             msg = QMessageBox(self)
             msg.setWindowTitle("แจ้งเตือนครบกำหนด!!")
             msg.setText("\n".join(alerts))
-            msg.setStyleSheet(STYLE)
             msg.exec()
