@@ -14,7 +14,7 @@ code TaskGui67Team
 ติดตั้ง Library
 pip install PySide6
 รันโปรแกรม
-python main.py
+py main.py
 
 
 วิธีการใช้งาน
