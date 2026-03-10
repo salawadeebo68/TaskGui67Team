@@ -10,7 +10,7 @@
 วิธีการติดตั้ง
 clone โปรเจค
 git clone https://github.com/salawadeebo68/TaskGui67Team.git
-cd TaskGui67Team
+code TaskGui67Team
 ติดตั้ง Library
 pip install PySide6
 รันโปรแกรม

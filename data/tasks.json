@@ -1,36 +1,16 @@
 [
   {
-    "title": "www",
-    "deadline": "2027-03-09",
+    "title": "สอบโครงสร้างข้อมูล",
+    "deadline": "2026-03-11",
+    "priority": "Medium",
+    "completed": true,
+    "created_at": "2026-03-10 14:52"
+  },
+  {
+    "title": "สอบภาษาไทย",
+    "deadline": "2026-03-10",
     "priority": "Low",
     "completed": false,
-    "created_at": "2026-03-09 18:51",
-    "notes": "www",
-    "type": "priority"
-  },
-  {
-    "title": "ไ",
-    "deadline": "2026-03-18",
-    "priority": "Medium",
-    "completed": false,
-    "created_at": "2026-03-09 18:56",
-    "notes": "ไไ",
-    "type": "priority"
-  },
-  {
-    "title": "ทำยังไง",
-    "deadline": "2026-03-17",
-    "priority": "Medium",
-    "completed": false,
-    "created_at": "2026-03-09 23:17",
-    "notes": "ทดสอบ",
-    "type": "priority"
-  },
-  {
-    "title": "ทดสอบแจ้งเตือน",
-    "deadline": "2026-03-10",
-    "priority": "High",
-    "completed": false,
-    "created_at": "2026-03-10 02:42"
+    "created_at": "2026-03-10 14:53"
   }
 ]
